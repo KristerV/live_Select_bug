@@ -1,0 +1,41 @@
+<.header>
+  Listing Profiles
+  <:actions>
+    <.link patch={~p"/profiles/new"}>
+      <.button>New Profile</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="profiles" rows={@profiles} row_click={&JS.navigate(~p"/profiles/#{&1}")}>
+  <:col :let={profile} label="First name"><%= profile.first_name %></:col>
+  <:col :let={profile} label="Last name"><%= profile.last_name %></:col>
+  <:col :let={profile} label="Country"><%= profile.country %></:col>
+  <:action :let={profile}>
+    <div class="sr-only">
+      <.link navigate={~p"/profiles/#{profile}"}>Show</.link>
+    </div>
+    <.link patch={~p"/profiles/#{profile}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={profile}>
+    <.link phx-click={JS.push("delete", value: %{id: profile.id})} data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="profile-modal"
+  show
+  on_cancel={JS.navigate(~p"/profiles")}
+>
+  <.live_component
+    module={LiveSelectBugWeb.ProfileLive.FormComponent}
+    id={@profile.id || :new}
+    title={@page_title}
+    action={@live_action}
+    profile={@profile}
+    navigate={~p"/profiles"}
+  />
+</.modal>
