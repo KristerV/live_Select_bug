@@ -1,6 +1,7 @@
 defmodule LiveSelectBugWeb.ProfileLive.FormComponent do
   use LiveSelectBugWeb, :live_component
 
+  import LiveSelect
   alias LiveSelectBug.Accounts
 
   @impl true
@@ -22,7 +23,7 @@ defmodule LiveSelectBugWeb.ProfileLive.FormComponent do
       >
         <.input field={{f, :first_name}} type="text" label="First name" />
         <.input field={{f, :last_name}} type="text" label="Last name" />
-        <.input field={{f, :country}} type="text" label="Country" />
+        <%= live_select(f, :country) %>
         <:actions>
           <.button phx-disable-with="Saving...">Save Profile</.button>
         </:actions>
